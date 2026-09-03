@@ -5,7 +5,7 @@
       <div class="editor-page__actions">
         <AppButton
           variant="secondary"
-          :disabled="session.undoStack.length === 0"
+          :disabled="!canUndo"
           aria-label="Отменить последнее действие"
           @click="undo"
         >
@@ -13,7 +13,7 @@
         </AppButton>
         <AppButton
           variant="secondary"
-          :disabled="session.redoStack.length === 0"
+          :disabled="!canRedo"
           aria-label="Повторить отменённое действие"
           @click="redo"
         >
@@ -125,6 +125,8 @@ const hasChanges = computed(
     JSON.stringify({ title: session.note.value.title, todos: session.note.value.todos }) !==
     JSON.stringify({ title: props.initialNote.title, todos: props.initialNote.todos }),
 );
+const canUndo = computed(() => session.undoStack.value.length > 0);
+const canRedo = computed(() => session.redoStack.value.length > 0);
 const canSave = computed(
   () =>
     Boolean(session.note.value.title?.trim()) &&
