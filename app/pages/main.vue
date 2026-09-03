@@ -1,7 +1,3 @@
-<template>
-  <div>
-    <h1>Главная</h1>
-  </div>
-</template>
-
-<script setup></script>
+<script setup lang="ts">
+await navigateTo("/", { redirectCode: 301 });
+</script>
