@@ -7,10 +7,15 @@ SPA для заметок и списков задач на Nuxt 4.
 ```bash
 git clone https://github.com/evanlipp/i.gubarev_for_nebus.git
 cd i.gubarev_for_nebus
-docker compose up -d --build
+docker compose up -d
 ```
 
 Приложение будет доступно по адресу [http://localhost:3001](http://localhost:3001).
+
+Первый запуск может занять около 30 секунд: Docker устанавливает зависимости.
+
+При запуске без фонового режима (`docker compose up`) дождитесь сообщения Nuxt с
+адресом приложения. Не нажимайте `Ctrl+C`: эта комбинация останавливает контейнер.
 
 Остановить контейнер:
 
@@ -18,14 +23,37 @@ docker compose up -d --build
 docker compose down
 ```
 
-Поддерживается и команда из ТЗ: `docker-compose up`.
+## Запуск без Docker
 
-Если после изменения зависимостей контейнер сообщает, что модуль не найден, удалите
-кэшированный Docker-том зависимостей и запустите проект заново:
+Для разработки:
 
 ```bash
-docker compose down -v
-docker compose up --build
+npm ci
+npm run dev
 ```
 
-Исходный код при этом не удаляется.
+Приложение будет доступно по адресу [http://localhost:3001](http://localhost:3001).
+
+Для production-сборки и её локального запуска:
+
+```bash
+npm run build
+node .output/server/index.mjs
+```
+
+Production-версия по умолчанию будет доступна по адресу [http://localhost:3000](http://localhost:3000).
+
+## Тесты
+
+Установите зависимости и выполните unit-тесты:
+
+```bash
+npm ci
+npm test
+```
+
+Для запуска в режиме наблюдения:
+
+```bash
+npm run test:watch
+```

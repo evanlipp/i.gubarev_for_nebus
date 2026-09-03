@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p class="app-greeting">Привет, приятного просмотра и хорошего дня! Губарев Иван</p>
     <NuxtPage />
   </div>
 </template>
@@ -18,3 +19,11 @@ function onStorage(event: StorageEvent) {
 onMounted(() => window.addEventListener("storage", onStorage));
 onBeforeUnmount(() => window.removeEventListener("storage", onStorage));
 </script>
+
+<style scoped>
+.app-greeting {
+  width: min(100% - 2rem, 72rem);
+  margin: 1rem auto 0;
+  color: #667085;
+}
+</style>

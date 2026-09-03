@@ -25,7 +25,6 @@
         v-for="note in notesStore.notes"
         :key="note.id"
         :note="note"
-        @open="openNote(note.id)"
         @remove="askRemove(note)"
       />
     </section>
@@ -51,9 +50,6 @@ const isDeleteDialogOpen = ref(false);
 onMounted(() => notesStore.load());
 function createNote() {
   navigateTo("/notes/new");
-}
-function openNote(id: string) {
-  navigateTo(`/notes/${id}`);
 }
 function askRemove(note: Note) {
   noteToDelete.value = note;

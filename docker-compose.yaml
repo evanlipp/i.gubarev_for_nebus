@@ -2,6 +2,7 @@ services:
   app:
     build:
       context: .
+    command: sh ./docker-entrypoint.sh
     init: true
     ports:
       - "3001:3001"

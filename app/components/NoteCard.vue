@@ -1,6 +1,6 @@
 <template>
   <article class="note-card">
-    <button class="note-card__open" type="button" @click="$emit('open')">
+    <NuxtLink class="note-card__open" :to="`/notes/${note.id}`">
       <h2 class="note-card__title">{{ note.title }}</h2>
       <ul v-if="displayedTodos.length" class="note-card__todos" aria-label="Задачи заметки">
         <TodoPreview
@@ -11,7 +11,7 @@
         />
       </ul>
       <p v-else class="note-card__empty">Нет задач</p>
-    </button>
+    </NuxtLink>
     <button
       v-if="remainingTodos && !isExpanded"
       class="note-card__more"
@@ -41,7 +41,6 @@ const props = withDefaults(
 );
 
 defineEmits<{
-  open: [];
   remove: [];
 }>();
 
@@ -67,11 +66,13 @@ const remainingTodos = computed(() => Math.max(0, props.note.todos.length - prop
   cursor: pointer;
 }
 .note-card__open {
+  display: block;
   min-width: 0;
   border: 0;
   color: inherit;
   background: transparent;
   text-align: left;
+  text-decoration: none;
 }
 .note-card__title {
   overflow: hidden;
