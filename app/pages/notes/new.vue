@@ -1,7 +1,8 @@
-<template>
-  <main class="notes-page">
-    <h1 class="notes-page__title">Новая заметка</h1>
-    <p>Редактор заметки будет доступен в следующем этапе.</p>
-    <AppButton @click="navigateTo('/')">Вернуться к списку</AppButton>
-  </main>
-</template>
+<script setup lang="ts">
+import { createNote } from "~/utils/note";
+import NoteEditor from "~/components/NoteEditor.vue";
+
+const note = createNote({ title: "" });
+</script>
+
+<template><NoteEditor :initial-note="note" is-new /></template>
