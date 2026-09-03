@@ -1,9 +1,9 @@
 <template>
-  <AppModal v-model="isOpen" :title="title" @cancel="cancel">
+  <AppModal v-model="isOpen" :title="title" @cancel="handleModalCancel">
     <p class="confirm-dialog__message">{{ message }}</p>
 
     <template #footer>
-      <AppButton variant="secondary" @click="cancel">{{ cancelText }}</AppButton>
+      <AppButton variant="secondary" @click="cancelButton">{{ cancelText }}</AppButton>
       <AppButton :variant="danger ? 'danger' : 'primary'" @click="confirm">
         {{ confirmText }}
       </AppButton>
@@ -34,6 +34,7 @@ const emit = defineEmits<{
   "update:modelValue": [value: boolean];
   confirm: [];
   cancel: [];
+  "cancel-button": [];
 }>();
 
 const isOpen = computed({
@@ -49,6 +50,16 @@ function confirm() {
 function cancel() {
   emit("cancel");
   emit("update:modelValue", false);
+}
+
+function cancelButton() {
+  emit("cancel");
+  emit("cancel-button");
+  emit("update:modelValue", false);
+}
+
+function handleModalCancel() {
+  cancel();
 }
 </script>
 

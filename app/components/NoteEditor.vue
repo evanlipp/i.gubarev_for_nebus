@@ -1,8 +1,24 @@
 <template>
   <main class="editor-page">
     <header class="editor-page__header">
-      <AppButton variant="ghost" @click="cancel">Отменить изменения</AppButton>
+      <AppButton variant="ghost" @click="cancel">К списку</AppButton>
       <div class="editor-page__actions">
+        <AppButton
+          variant="secondary"
+          :disabled="session.undoStack.length === 0"
+          aria-label="Отменить последнее действие"
+          @click="undo"
+        >
+          Отменить
+        </AppButton>
+        <AppButton
+          variant="secondary"
+          :disabled="session.redoStack.length === 0"
+          aria-label="Повторить отменённое действие"
+          @click="redo"
+        >
+          Повторить
+        </AppButton>
         <AppButton :disabled="!canSave" @click="save">Сохранить</AppButton>
         <AppButton v-if="!isNew" variant="danger" @click="isDeleteDialogOpen = true"
           >Удалить</AppButton
@@ -56,8 +72,10 @@
       v-model="isCancelDialogOpen"
       title="Отменить изменения?"
       message="Несохранённые изменения будут удалены."
-      confirm-text="Отменить изменения"
-      @confirm="leave"
+      cancel-text="Отменить изменения"
+      confirm-text="Сохранить изменения"
+      @cancel-button="leave"
+      @confirm="save"
     />
     <ConfirmDialog
       v-model="isDeleteDialogOpen"
@@ -81,6 +99,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import type { Note } from "~/types/note";
 import { useDraft } from "~/composables/useDraft";
 import { useEditSession } from "~/composables/useEditSession";
@@ -89,6 +108,7 @@ import { getEditorShortcut } from "~/utils/editorShortcuts";
 import { NOTES_STORAGE_KEY } from "~/utils/storage/notes";
 
 const props = withDefaults(defineProps<{ initialNote: Note; isNew?: boolean }>(), { isNew: false });
+const router = useRouter();
 const notesStore = useNotesStore();
 const session = useEditSession(props.initialNote);
 const note = session.note;
@@ -98,7 +118,13 @@ const showError = ref(false);
 const isCancelDialogOpen = ref(false);
 const isDeleteDialogOpen = ref(false);
 const isDraftDialogOpen = ref(Boolean(draft.hasDraft.value));
+const isLeaving = ref(false);
 const hasDraft = draft.hasDraft;
+const hasChanges = computed(
+  () =>
+    JSON.stringify({ title: session.note.value.title, todos: session.note.value.todos }) !==
+    JSON.stringify({ title: props.initialNote.title, todos: props.initialNote.todos }),
+);
 const canSave = computed(
   () =>
     Boolean(session.note.value.title?.trim()) &&
@@ -109,9 +135,18 @@ onMounted(() => {
   window.addEventListener("keydown", onKeydown);
   window.addEventListener("storage", onStorage);
 });
+const removeNavigationGuard = router.beforeEach((_to, _from) => {
+  if (isLeaving.value || !hasChanges.value) {
+    return true;
+  }
+
+  isCancelDialogOpen.value = true;
+  return false;
+});
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", onKeydown);
   window.removeEventListener("storage", onStorage);
+  removeNavigationGuard();
 });
 
 function onStorage(event: StorageEvent) {
@@ -180,13 +215,19 @@ function save() {
   if (props.isNew) notesStore.createNote({ title: note.title, todos: note.todos });
   else notesStore.updateNote(note);
   draft.discard();
+  isLeaving.value = true;
   navigateTo("/");
 }
 function cancel() {
-  isCancelDialogOpen.value = true;
+  if (hasChanges.value) {
+    isCancelDialogOpen.value = true;
+  } else {
+    leave();
+  }
 }
 function leave() {
   draft.discard();
+  isLeaving.value = true;
   navigateTo("/");
 }
 function remove() {
