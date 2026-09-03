@@ -1,75 +1,26 @@
-# Nuxt Minimal Starter
+# Заметки
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Небольшое приложение для заметок и списков задач.
 
-## Setup
+## Запуск
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+Шаг 1. Скачайте проект и откройте папку проекта в терминале.
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+git clone https://github.com/evanlipp/i.gubarev_for_nebus.git
+cd i.gubarev_for_nebus
 ```
 
-## Production
-
-Build the application for production:
+Шаг 2. Запустите приложение.
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+docker compose up -d
 ```
 
-Locally preview production build:
+Шаг 3. Откройте [http://localhost:3001](http://localhost:3001) в браузере.
+
+Чтобы остановить приложение:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+docker compose down
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
