@@ -1,0 +1,71 @@
+<template>
+  <AppModal v-model="isOpen" :title="title" @cancel="handleModalCancel">
+    <p class="confirm-dialog__message">{{ message }}</p>
+
+    <template #footer>
+      <AppButton variant="secondary" @click="cancelButton">{{ cancelText }}</AppButton>
+      <AppButton :variant="danger ? 'danger' : 'primary'" @click="confirm">
+        {{ confirmText }}
+      </AppButton>
+    </template>
+  </AppModal>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    title: string;
+    message: string;
+    confirmText?: string;
+    cancelText?: string;
+    danger?: boolean;
+  }>(),
+  {
+    confirmText: "Подтвердить",
+    cancelText: "Отмена",
+    danger: false,
+  },
+);
+
+const emit = defineEmits<{
+  "update:modelValue": [value: boolean];
+  confirm: [];
+  cancel: [];
+  "cancel-button": [];
+}>();
+
+const isOpen = computed({
+  get: () => props.modelValue,
+  set: (value: boolean) => emit("update:modelValue", value),
+});
+
+function confirm() {
+  emit("confirm");
+  emit("update:modelValue", false);
+}
+
+function cancel() {
+  emit("cancel");
+  emit("update:modelValue", false);
+}
+
+function cancelButton() {
+  emit("cancel");
+  emit("cancel-button");
+  emit("update:modelValue", false);
+}
+
+function handleModalCancel() {
+  cancel();
+}
+</script>
+
+<style scoped>
+.confirm-dialog__message {
+  color: #667085;
+  line-height: 1.5;
+}
+</style>

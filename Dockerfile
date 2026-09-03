@@ -4,8 +4,9 @@ WORKDIR /app
 ENV NUXT_TELEMETRY_DISABLED=1
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci && cp package-lock.json node_modules/.package-lock.json
 
 COPY . ./
+RUN chmod +x docker-entrypoint.sh
 EXPOSE 3001
-CMD ["npm", "run", "dev:docker"]
+CMD ["sh", "./docker-entrypoint.sh"]
