@@ -233,6 +233,7 @@ function leave() {
   navigateTo("/");
 }
 function remove() {
+  isLeaving.value = true;
   notesStore.deleteNote(session.note.value.id);
   draft.discard();
   navigateTo("/");
