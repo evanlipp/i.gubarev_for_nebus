@@ -35,5 +35,7 @@ defineEmits<{
 }>();
 
 const visibleTodos = computed(() => props.note.todos.slice(0, props.todosLimit));
-const remainingTodos = computed(() => Math.max(0, props.note.todos.length - visibleTodos.value.length));
+const remainingTodos = computed(() =>
+  Math.max(0, props.note.todos.length - visibleTodos.value.length),
+);
 </script>

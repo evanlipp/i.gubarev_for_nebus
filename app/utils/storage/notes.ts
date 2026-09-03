@@ -65,11 +65,7 @@ function getBrowserStorage(): StorageLike | null {
 }
 
 function isStoredNotes(value: unknown): value is StoredNotes {
-  if (
-    !isRecord(value) ||
-    value.version !== STORAGE_VERSION ||
-    !Array.isArray(value.notes)
-  ) {
+  if (!isRecord(value) || value.version !== STORAGE_VERSION || !Array.isArray(value.notes)) {
     return false;
   }
 

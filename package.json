@@ -10,6 +10,9 @@
     "preview": "nuxt preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write app nuxt.config.ts tsconfig.json vitest.config.ts eslint.config.mjs prettier.config.mjs",
+    "format:check": "prettier --check app nuxt.config.ts tsconfig.json vitest.config.ts eslint.config.mjs prettier.config.mjs",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
@@ -19,7 +22,13 @@
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
+    "@nuxt/eslint": "^1.17.0",
     "@pinia/nuxt": "^1.0.2",
+    "@nuxt/eslint": "^1.15.0",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
     "sass": "^1.103.1",
     "vitest": "^4.1.11"
   }

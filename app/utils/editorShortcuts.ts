@@ -18,8 +18,15 @@ export function getEditorShortcut(
   target: ShortcutTarget | null,
   isApplePlatform: boolean,
 ): EditorShortcut | undefined {
-  const modifierPressed = isApplePlatform ? event.metaKey && !event.ctrlKey : event.ctrlKey && !event.metaKey;
-  if (!modifierPressed || event.altKey || ["INPUT", "TEXTAREA"].includes(target?.tagName ?? "") || target?.isContentEditable) {
+  const modifierPressed = isApplePlatform
+    ? event.metaKey && !event.ctrlKey
+    : event.ctrlKey && !event.metaKey;
+  if (
+    !modifierPressed ||
+    event.altKey ||
+    ["INPUT", "TEXTAREA"].includes(target?.tagName ?? "") ||
+    target?.isContentEditable
+  ) {
     return undefined;
   }
 

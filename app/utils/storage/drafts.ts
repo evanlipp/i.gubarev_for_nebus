@@ -29,7 +29,11 @@ export function loadDraft(noteId: string, storage = getBrowserStorage()): NoteDr
   }
 }
 
-export function saveDraft(note: Note, storage = getBrowserStorage(), savedAt = new Date().toISOString()) {
+export function saveDraft(
+  note: Note,
+  storage = getBrowserStorage(),
+  savedAt = new Date().toISOString(),
+) {
   if (!storage || !isNote(note)) {
     return false;
   }

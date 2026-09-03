@@ -14,7 +14,10 @@ export function applyOperation(note: Note, operation: EditOperation): Note {
     case "set-todo-text":
       return updateTodo(note, operation.todoId, (todo) => ({ ...todo, text: operation.after }));
     case "set-todo-completed":
-      return updateTodo(note, operation.todoId, (todo) => ({ ...todo, completed: operation.after }));
+      return updateTodo(note, operation.todoId, (todo) => ({
+        ...todo,
+        completed: operation.after,
+      }));
     case "add-todo":
       return insertTodo(note, operation.todo, operation.index);
     case "remove-todo":

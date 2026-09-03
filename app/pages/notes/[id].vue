@@ -1,4 +1,10 @@
-<template><NoteEditor v-if="note" :initial-note="note" /><EmptyState v-else title="Заметка не найдена" description="Она могла быть удалена в другой вкладке." /></template>
+<template>
+  <NoteEditor v-if="note" :initial-note="note" /><EmptyState
+    v-else
+    title="Заметка не найдена"
+    description="Она могла быть удалена в другой вкладке."
+  />
+</template>
 
 <script setup lang="ts">
 import { computed, onMounted } from "vue";

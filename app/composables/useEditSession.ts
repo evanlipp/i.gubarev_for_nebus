@@ -55,7 +55,10 @@ export function useEditSession(initialNote: Note, delay = TEXT_GROUP_DELAY) {
     }
 
     if (!pendingTodoTexts.has(todoId)) {
-      pendingTodoTexts.set(todoId, startTextChange(todo.text, () => flushTodoText(todoId)));
+      pendingTodoTexts.set(
+        todoId,
+        startTextChange(todo.text, () => flushTodoText(todoId)),
+      );
     }
 
     note.value = applyOperation(note.value, {

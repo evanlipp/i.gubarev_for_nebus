@@ -322,14 +322,19 @@ a:focus-visible {
     gap: 0.75rem;
   }
 
-  &__header { justify-content: space-between; margin-bottom: 2rem; }
+  &__header {
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
 }
 
 .editor-form {
   display: grid;
   gap: 0.75rem;
 
-  &__label { font-weight: 600; }
+  &__label {
+    font-weight: 600;
+  }
   &__title,
   .editor-todo__text,
   .editor-todos__add input {
@@ -338,8 +343,12 @@ a:focus-visible {
     border-radius: 0.5rem;
     padding: 0.625rem 0.75rem;
   }
-  &__title { font-size: 1.5rem; }
-  &__error { color: #b42318; }
+  &__title {
+    font-size: 1.5rem;
+  }
+  &__error {
+    color: #b42318;
+  }
 }
 
 .editor-todos {
@@ -347,11 +356,21 @@ a:focus-visible {
   gap: 1rem;
   margin-top: 1.5rem;
 
-  &__list { display: grid; gap: 0.75rem; list-style: none; }
-  &__add input { min-width: 0; flex: 1; }
+  &__list {
+    display: grid;
+    gap: 0.75rem;
+    list-style: none;
+  }
+  &__add input {
+    min-width: 0;
+    flex: 1;
+  }
 }
 
-.editor-todo__text { min-width: 0; flex: 1; }
+.editor-todo__text {
+  min-width: 0;
+  flex: 1;
+}
 
 @media (max-width: 480px) {
   .notes-page {
@@ -368,12 +387,27 @@ a:focus-visible {
     }
   }
 
-  .editor-page { width: min(100% - 1rem, 56rem); padding-top: 1rem; }
-  .editor-page__header { align-items: stretch; flex-direction: column; }
-  .editor-page__actions { flex-wrap: wrap; }
-  .editor-page__actions .app-button { flex: 1; }
-  .editor-todo { align-items: stretch; flex-wrap: wrap; }
-  .editor-todo__text { flex-basis: calc(100% - 2.5rem); }
+  .editor-page {
+    width: min(100% - 1rem, 56rem);
+    padding-top: 1rem;
+  }
+  .editor-page__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .editor-page__actions {
+    flex-wrap: wrap;
+  }
+  .editor-page__actions .app-button {
+    flex: 1;
+  }
+  .editor-todo {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .editor-todo__text {
+    flex-basis: calc(100% - 2.5rem);
+  }
 
   .app-modal {
     width: calc(100% - 1rem);

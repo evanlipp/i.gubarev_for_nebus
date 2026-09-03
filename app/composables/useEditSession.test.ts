@@ -82,7 +82,9 @@ describe("edit session", () => {
     }
 
     expect(session.undoStack.value).toHaveLength(50);
-    expect(session.undoStack.value.every((operation) => !Object.hasOwn(operation, "todos"))).toBe(true);
+    expect(session.undoStack.value.every((operation) => !Object.hasOwn(operation, "todos"))).toBe(
+      true,
+    );
   });
 
   it("clears history on reset", () => {
