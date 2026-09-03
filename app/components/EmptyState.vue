@@ -14,3 +14,23 @@ defineProps<{
   description?: string;
 }>();
 </script>
+
+<style scoped>
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: clamp(2rem, 8vw, 5rem) 1.5rem;
+  text-align: center;
+}
+.empty-state__title {
+  font-size: 1.25rem;
+}
+.empty-state__description {
+  color: #667085;
+  line-height: 1.5;
+}
+.empty-state__action {
+  margin-top: 0.5rem;
+}
+</style>

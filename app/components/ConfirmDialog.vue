@@ -51,3 +51,10 @@ function cancel() {
   emit("update:modelValue", false);
 }
 </script>
+
+<style scoped>
+.confirm-dialog__message {
+  color: #667085;
+  line-height: 1.5;
+}
+</style>

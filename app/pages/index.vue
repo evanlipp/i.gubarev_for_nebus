@@ -6,8 +6,15 @@
       </div>
       <AppButton @click="createNote">Новая заметка</AppButton>
     </header>
+    <p
+      v-if="notesStore.loading || !notesStore.initialized"
+      class="notes-page__loader"
+      role="status"
+    >
+      Загрузка заметок…
+    </p>
     <EmptyState
-      v-if="!notesStore.notes.length"
+      v-else-if="!notesStore.notes.length"
       title="Заметок пока нет"
       description="Создайте первую заметку, чтобы собрать задачи в одном месте."
     >
@@ -58,3 +65,45 @@ function removeNote() {
   noteToDelete.value = null;
 }
 </script>
+
+<style scoped lang="scss">
+.notes-page {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  &__title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.2;
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  &__loader {
+    padding: 3rem 0;
+    color: #667085;
+    text-align: center;
+  }
+}
+@media (max-width: 480px) {
+  .notes-page {
+    width: min(100% - 1rem, 72rem);
+    padding-top: 1.25rem;
+    &__header {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    &__header .app-button {
+      width: 100%;
+    }
+  }
+}
+</style>

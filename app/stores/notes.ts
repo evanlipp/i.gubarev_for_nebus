@@ -8,6 +8,7 @@ export const useNotesStore = defineStore("notes", {
   state: () => ({
     notes: [] as Note[],
     initialized: false,
+    loading: false,
   }),
 
   getters: {
@@ -16,12 +17,17 @@ export const useNotesStore = defineStore("notes", {
 
   actions: {
     load() {
-      if (this.initialized) {
+      if (this.initialized || this.loading) {
         return;
       }
 
-      this.notes = loadNotes();
-      this.initialized = true;
+      this.loading = true;
+      try {
+        this.notes = loadNotes();
+        this.initialized = true;
+      } finally {
+        this.loading = false;
+      }
     },
 
     sync() {

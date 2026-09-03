@@ -1,14 +1,8 @@
 <template>
   <main class="editor-page">
     <header class="editor-page__header">
-      <AppButton variant="ghost" @click="cancel">К списку</AppButton>
+      <AppButton variant="ghost" @click="cancel">Отменить изменения</AppButton>
       <div class="editor-page__actions">
-        <AppButton variant="secondary" :disabled="!undoStack.length" @click="undo"
-          >Отменить</AppButton
-        >
-        <AppButton variant="secondary" :disabled="!redoStack.length" @click="redo"
-          >Повторить</AppButton
-        >
         <AppButton :disabled="!canSave" @click="save">Сохранить</AppButton>
         <AppButton v-if="!isNew" variant="danger" @click="isDeleteDialogOpen = true"
           >Удалить</AppButton
@@ -98,8 +92,6 @@ const props = withDefaults(defineProps<{ initialNote: Note; isNew?: boolean }>()
 const notesStore = useNotesStore();
 const session = useEditSession(props.initialNote);
 const note = session.note;
-const undoStack = session.undoStack;
-const redoStack = session.redoStack;
 const draft = useDraft(props.initialNote.id);
 const newTodoText = ref("");
 const showError = ref(false);
@@ -207,3 +199,85 @@ function restoreDraft() {
   if (restored) session.reset(restored);
 }
 </script>
+
+<style scoped lang="scss">
+.editor-page {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+  &__header,
+  &__actions,
+  .editor-todo,
+  .editor-todos__add {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  &__header {
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+}
+.editor-form {
+  display: grid;
+  gap: 0.75rem;
+}
+.editor-form__label {
+  font-weight: 600;
+}
+.editor-form__title,
+.editor-todo__text,
+.editor-todos__add input {
+  min-height: 2.75rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+}
+.editor-form__title {
+  font-size: 1.5rem;
+}
+.editor-form__error {
+  color: #b42318;
+}
+.editor-todos {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.editor-todos__list {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+}
+.editor-todos__add input {
+  min-width: 0;
+  flex: 1;
+}
+.editor-todo__text {
+  min-width: 0;
+  flex: 1;
+}
+@media (max-width: 480px) {
+  .editor-page {
+    width: min(100% - 1rem, 72rem);
+    padding-top: 1.25rem;
+  }
+  .editor-page__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .editor-page__actions {
+    flex-wrap: wrap;
+  }
+  .editor-page__actions .app-button {
+    flex: 1;
+  }
+  .editor-todo {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .editor-todo__text {
+    flex-basis: calc(100% - 2.5rem);
+  }
+}
+</style>
