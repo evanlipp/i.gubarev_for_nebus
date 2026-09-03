@@ -3,8 +3,8 @@
     <header class="editor-page__header">
       <AppButton variant="ghost" @click="cancel">К списку</AppButton>
       <div class="editor-page__actions">
-        <AppButton variant="secondary" :disabled="!session.undoStack.length" @click="session.undo">Отменить</AppButton>
-        <AppButton variant="secondary" :disabled="!session.redoStack.length" @click="session.redo">Повторить</AppButton>
+        <AppButton variant="secondary" :disabled="!undoStack.length" @click="undo">Отменить</AppButton>
+        <AppButton variant="secondary" :disabled="!redoStack.length" @click="redo">Повторить</AppButton>
         <AppButton :disabled="!canSave" @click="save">Сохранить</AppButton>
         <AppButton v-if="!isNew" variant="danger" @click="isDeleteDialogOpen = true">Удалить</AppButton>
       </div>
@@ -40,11 +40,14 @@ import type { Note } from "~/types/note";
 import { useDraft } from "~/composables/useDraft";
 import { useEditSession } from "~/composables/useEditSession";
 import { useNotesStore } from "~/stores/notes";
+import { getEditorShortcut } from "~/utils/editorShortcuts";
 
 const props = withDefaults(defineProps<{ initialNote: Note; isNew?: boolean }>(), { isNew: false });
 const notesStore = useNotesStore();
 const session = useEditSession(props.initialNote);
 const note = session.note;
+const undoStack = session.undoStack;
+const redoStack = session.redoStack;
 const draft = useDraft(props.initialNote.id);
 const newTodoText = ref("");
 const showError = ref(false);
@@ -59,10 +62,23 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
 
 function onKeydown(event: KeyboardEvent) {
   const target = event.target as HTMLElement | null;
-  if (!event.metaKey && !event.ctrlKey || ["INPUT", "TEXTAREA"].includes(target?.tagName ?? "") || target?.isContentEditable) return;
-  if (event.key.toLowerCase() !== "z") return;
+  const isApplePlatform = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
+  const shortcut = getEditorShortcut(event, target, isApplePlatform);
+  if (!shortcut) return;
   event.preventDefault();
-  if (event.shiftKey) session.redo(); else session.undo();
+  if (shortcut === "redo") redo(); else undo();
+}
+
+function undo() {
+  if (session.undo()) {
+    draft.schedule(note.value);
+  }
+}
+
+function redo() {
+  if (session.redo()) {
+    draft.schedule(note.value);
+  }
 }
 
 function setTitle(event: Event) { session.setTitle((event.target as HTMLInputElement).value); draft.schedule(session.note.value); }
