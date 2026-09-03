@@ -24,6 +24,11 @@ export const useNotesStore = defineStore("notes", {
       this.initialized = true;
     },
 
+    sync() {
+      this.notes = loadNotes();
+      this.initialized = true;
+    },
+
     createNote(input: CreateNoteInput) {
       const note = createNote(input);
 

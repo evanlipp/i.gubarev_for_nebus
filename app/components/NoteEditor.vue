@@ -41,6 +41,7 @@ import { useDraft } from "~/composables/useDraft";
 import { useEditSession } from "~/composables/useEditSession";
 import { useNotesStore } from "~/stores/notes";
 import { getEditorShortcut } from "~/utils/editorShortcuts";
+import { NOTES_STORAGE_KEY } from "~/utils/storage/notes";
 
 const props = withDefaults(defineProps<{ initialNote: Note; isNew?: boolean }>(), { isNew: false });
 const notesStore = useNotesStore();
@@ -57,8 +58,20 @@ const isDraftDialogOpen = ref(Boolean(draft.hasDraft.value));
 const hasDraft = draft.hasDraft;
 const canSave = computed(() => Boolean(session.note.value.title?.trim()) && session.note.value.todos.every((todo) => Boolean(todo?.text?.trim())));
 
-onMounted(() => window.addEventListener("keydown", onKeydown));
-onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
+onMounted(() => {
+  window.addEventListener("keydown", onKeydown);
+  window.addEventListener("storage", onStorage);
+});
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", onKeydown);
+  window.removeEventListener("storage", onStorage);
+});
+
+function onStorage(event: StorageEvent) {
+  if (!props.isNew && (event.key === NOTES_STORAGE_KEY || event.key === null) && !notesStore.getNoteById(note.value.id)) {
+    draft.discard();
+  }
+}
 
 function onKeydown(event: KeyboardEvent) {
   const target = event.target as HTMLElement | null;

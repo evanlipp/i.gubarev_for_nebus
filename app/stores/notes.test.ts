@@ -67,4 +67,15 @@ describe("notes store", () => {
     expect(store.getNoteById(created.id)).toBeUndefined();
     expect(loadNotes(storage)).toEqual([]);
   });
+
+  it("syncs notes after storage changes in another tab", () => {
+    const store = useNotesStore();
+    store.load();
+    const storedNote = note("note-1", "Из другой вкладки");
+    saveNotes([storedNote], storage);
+
+    store.sync();
+
+    expect(store.notes).toEqual([storedNote]);
+  });
 });
